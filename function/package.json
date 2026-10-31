@@ -1,0 +1,13 @@
+{
+  "name": "function-app-servicebus-trigger",
+  "version": "1.0.0",
+  "description": "An HTTP function that sends to a Service Bus queue, and a Service Bus triggered function that stores each message in Table Storage",
+  "main": "src/functions/*.js",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.16.0"
+  }
+}
