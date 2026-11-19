@@ -70,7 +70,7 @@ Shared-key and SAS authentication are switched off on both the Service Bus names
 * [Locally Build](https://locally.build).
 * Either [HashiCorp Terraform](https://terraform.io) or [OpenTofu](https://opentofu.org).
 * Either [Docker](https://www.docker.com) or [Podman](https://podman.io) (recommended).
-* [Node.js](https://nodejs.org) 22+, to install the functions' dependencies.
+* [Node.js](https://nodejs.org) 24+, to install the functions' dependencies.
 * The Locally Plugin for `Microsoft.ServiceBus` installed (`locally plugin install --name Microsoft.ServiceBus`).
 * The Locally Plugin for `Microsoft.Storage` installed (`locally plugin install --name Microsoft.Storage`).
 * The Locally Plugin for `Microsoft.Web` installed (`locally plugin install --name Microsoft.Web`).
