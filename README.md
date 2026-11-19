@@ -12,7 +12,7 @@ o888ooooood8 `Y8bod8P' `Y8bod8P' `Y888""8o o888o o888o     .8'
 
 # Example: Pass messages from a Function App through Service Bus into Table Storage within Locally
 
-This example shows how a Function App can send messages to an Azure Service Bus queue, pick them up again with a Service Bus trigger and store each one in Azure Table Storage on [Locally Build](https://locally.build). The function code holds no keys, connection strings or passwords, and makes no SDK calls of its own: every connection goes through a Functions binding, and the Functions host authenticates each one with the app's **user-assigned managed identity**.
+This example shows how to send messages from a Function App to an Azure Service Bus queue, pick them up again with a Service Bus trigger and store each one in Azure Table Storage on [Locally Build](https://locally.build). The function code holds no keys, connection strings or passwords, and makes no SDK calls of its own: every connection goes through a Functions binding, and the Functions host authenticates each one with the app's **user-assigned managed identity**.
 
 ```
  Function App (Linux, Node.js)
@@ -70,22 +70,22 @@ Shared-key and SAS authentication are switched off on both the Service Bus names
 * [Locally Build](https://locally.build).
 * Either [HashiCorp Terraform](https://terraform.io) or [OpenTofu](https://opentofu.org).
 * Either [Docker](https://www.docker.com) or [Podman](https://podman.io) (recommended).
-* [Node.js](https://nodejs.org) 24+, to install the functions' dependencies.
+* [Node.js](https://nodejs.org) 24, to install the functions' dependencies. Locally runs the functions with the Node.js on your machine, so its major version needs to match the Function App's `node_version`.
+* The Locally Plugin for `Microsoft.Insights` installed (`locally plugin install --name Microsoft.Insights`).
+* The Locally Plugin for `Microsoft.OperationalInsights` installed (`locally plugin install --name Microsoft.OperationalInsights`).
 * The Locally Plugin for `Microsoft.ServiceBus` installed (`locally plugin install --name Microsoft.ServiceBus`).
 * The Locally Plugin for `Microsoft.Storage` installed (`locally plugin install --name Microsoft.Storage`).
 * The Locally Plugin for `Microsoft.Web` installed (`locally plugin install --name Microsoft.Web`).
-* The Locally Plugin for `Microsoft.OperationalInsights` installed (`locally plugin install --name Microsoft.OperationalInsights`).
-* The Locally Plugin for `Microsoft.Insights` installed (`locally plugin install --name Microsoft.Insights`).
 
 ## Running the example
 
-First, make sure your container runtime (Docker or Podman) is running, then start Locally:
+First up, we need to ensure our container runtime (Docker or Podman) is running, then launch Locally:
 
 ```bash
 locally build
 ```
 
-The Function App is deployed from a zip that Terraform builds from `function/`, and the zip has to include the functions' dependencies, so install them first:
+The Function App is deployed from a zip that Terraform builds from `function/`, and the zip has to include the functions' dependencies, so we first install them:
 
 ```bash
 cd function
@@ -93,7 +93,7 @@ npm install
 cd ..
 ```
 
-With Locally running, open another terminal and initialise Terraform. This downloads the providers and sets up the module:
+With Locally running, in another terminal we can initialise Terraform, which both downloads the providers we need and configures the module for use:
 
 ```bash
 cd environments/locally
@@ -101,9 +101,9 @@ terraform init
 ```
 
 > [!NOTE]
-> You can use OpenTofu instead by running `tofu` wherever this says `terraform`.
+> It's possible to use OpenTofu here by substituting `terraform` for `tofu`.
 
-Once Terraform is initialised, provision the example:
+With Terraform initialised, we can then provision the example by running:
 
 ```bash
 locally run terraform apply
@@ -133,7 +133,7 @@ To peek at messages still on the queue (it's normally empty, because StoreMessag
 locally servicebus queue peek --namespace locally-example-sbfunc-bus --name messages
 ```
 
-The functions send their logs to a Log Analytics Workspace. You can query them in [the Monitoring section of the Locally Dashboard](https://localhost:5678/monitoring/components) by running:
+As this Terraform configuration sends the functions' logs into a Log Analytics Workspace, we can then query them within [the Locally Dashboard, in the Monitoring section](https://localhost:5678/monitoring/components), by running:
 
 ```
 FunctionAppLogs | order by TimeGenerated desc
